@@ -148,20 +148,18 @@
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    min-width:96px;
-    height:48px;
-    padding:0 10px;
+    min-width:4.2em;
+    padding:2px 10px;
     margin:0 4px;
     vertical-align:middle;
     border-radius:14px;
     border:3px dashed #C9B98F;
     background:var(--slot-empty);
-    font-size:25px;
+    font-size:1em;
+    line-height:1;
     font-weight:700;
     color:transparent;
     transition:background 0.15s, border-color 0.15s, transform 0.15s;
-    position:relative;
-    top:6px;
   }
   .slot.filled{
     border-style:solid;
@@ -531,7 +529,10 @@
     slot.textContent = q.answer;
     sentenceEl.appendChild(slot);
     if (q.after){
-      sentenceEl.appendChild(document.createTextNode(' ' + q.after));
+      // No leading space when punctuation should attach directly to the
+      // blank (e.g. "No, I am not." / "Who's at the door?" / "better?").
+      const noSpaceLead = /^[,.?!']/.test(q.after);
+      sentenceEl.appendChild(document.createTextNode((noSpaceLead ? '' : ' ') + q.after));
     }
 
     optionsEl.innerHTML = '';
@@ -547,11 +548,25 @@
     setTimeout(speakSentence, 350);
   }
 
+  // Some written words need a different pronunciation than their spelling
+  // (e.g. "X'mas" is written that way but should be read as "Christmas").
+  // Displayed text on screen is never changed — only what gets spoken.
+  const PRONOUNCE_AS = [
+    { pattern: /x'?mas/gi, say: 'Christmas' }
+  ];
+  function toSpeechText(text){
+    let out = text;
+    PRONOUNCE_AS.forEach(rule => { out = out.replace(rule.pattern, rule.say); });
+    return out;
+  }
+
   function speakSentence(){
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
-    const full = [currentBefore, currentAnswer, currentAfter].filter(Boolean).join(' ');
-    const u = new SpeechSynthesisUtterance(full);
+    const noSpaceLead = /^[,.?!']/.test(currentAfter || '');
+    const full = [currentBefore, currentAnswer].filter(Boolean).join(' ') +
+      (currentAfter ? (noSpaceLead ? '' : ' ') + currentAfter : '');
+    const u = new SpeechSynthesisUtterance(toSpeechText(full));
     u.lang = 'en-US';
     u.rate = 0.95;
     window.speechSynthesis.speak(u);
