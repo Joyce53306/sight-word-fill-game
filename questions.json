@@ -1,0 +1,630 @@
+{
+  "middle": [
+    {
+      "level": "middle",
+      "before": "I am",
+      "after": "great magician.",
+      "answer": "a",
+      "options": [
+        "go",
+        "a",
+        "to"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "",
+      "after": "can make any color.",
+      "answer": "I",
+      "options": [
+        "I",
+        "a",
+        "see"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "It",
+      "after": "purple.",
+      "answer": "made",
+      "options": [
+        "made",
+        "the",
+        "are"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "We are going",
+      "after": "a picnic.",
+      "answer": "on",
+      "options": [
+        "on",
+        "says",
+        "where"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "",
+      "after": "the snowy forest, I see a circle.",
+      "answer": "In",
+      "options": [
+        "have",
+        "it",
+        "In"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "That's",
+      "after": "just a circle.",
+      "answer": "not",
+      "options": [
+        "get",
+        "will",
+        "not"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "",
+      "after": "old are you?",
+      "answer": "How",
+      "options": [
+        "are",
+        "How",
+        "a"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "How",
+      "after": "you?",
+      "answer": "are",
+      "options": [
+        "here",
+        "are",
+        "big"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "",
+      "after": "are ten kittens.",
+      "answer": "Here",
+      "options": [
+        "Here",
+        "the",
+        "made"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "Can I go",
+      "after": "bike?",
+      "answer": "by",
+      "options": [
+        "not",
+        "by",
+        "to"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "How",
+      "after": "I get there?",
+      "answer": "will",
+      "options": [
+        "says",
+        "will",
+        "have"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "I",
+      "after": "so angry.",
+      "answer": "was",
+      "options": [
+        "was",
+        "go",
+        "are"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "I don't",
+      "after": "yellow bee.",
+      "answer": "like",
+      "options": [
+        "like",
+        "goes",
+        "and"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "We don't",
+      "after": "any milk.",
+      "answer": "have",
+      "options": [
+        "to",
+        "how",
+        "have"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "David",
+      "after": "to milk a cow.",
+      "answer": "goes",
+      "options": [
+        "was",
+        "is",
+        "goes"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "",
+      "after": "is the salt?",
+      "answer": "Where",
+      "options": [
+        "Where",
+        "play",
+        "see"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "Knock, knock.",
+      "after": "'s at the door?",
+      "answer": "Who",
+      "options": [
+        "Who",
+        "is",
+        "you"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "David likes to play",
+      "after": "her.",
+      "answer": "with",
+      "options": [
+        "with",
+        "was",
+        "you"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "This",
+      "after": "my friend Joy.",
+      "answer": "is",
+      "options": [
+        "is",
+        "like",
+        "big"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "",
+      "after": "are friends.",
+      "answer": "We",
+      "options": [
+        "We",
+        "to",
+        "that"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "David",
+      "after": "in big trouble.",
+      "answer": "is",
+      "options": [
+        "is",
+        "made",
+        "with"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "middle",
+      "before": "",
+      "after": "Sunday, David slept in the tree.",
+      "answer": "On",
+      "options": [
+        "it",
+        "play",
+        "On"
+      ],
+      "needsReview": false
+    }
+  ],
+  "big": [
+    {
+      "level": "big",
+      "before": "No, I",
+      "after": "eat all the food.",
+      "answer": "would",
+      "options": [
+        "have",
+        "would",
+        "who"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "Can I",
+      "after": "a chef?",
+      "answer": "be",
+      "options": [
+        "see",
+        "be",
+        "make"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "I am not.",
+      "answer": "No",
+      "options": [
+        "on",
+        "tried",
+        "No"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "David",
+      "after": "to hit the ball.",
+      "answer": "tried",
+      "options": [
+        "tried",
+        "with",
+        "which"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "I",
+      "after": "kick the ball.",
+      "answer": "can't",
+      "options": [
+        "draw",
+        "can't",
+        "need"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "It's a",
+      "after": "",
+      "answer": "ball",
+      "options": [
+        "david",
+        "we",
+        "ball"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "one is better?",
+      "answer": "Which",
+      "options": [
+        "please",
+        "Which",
+        "picnic"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "Is it",
+      "after": "?",
+      "answer": "better",
+      "options": [
+        "grow",
+        "better",
+        "be"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "This",
+      "after": ", please.",
+      "answer": "one",
+      "options": [
+        "we",
+        "like",
+        "one"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "I go with you?",
+      "answer": "Can",
+      "options": [
+        "for",
+        "Can",
+        "I"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "I help you?",
+      "answer": "May",
+      "options": [
+        "so",
+        "May",
+        "have"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "You",
+      "after": "a ball.",
+      "answer": "have",
+      "options": [
+        "if",
+        "did",
+        "have"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "He is",
+      "after": ".",
+      "answer": "first",
+      "options": [
+        "does",
+        "not",
+        "first"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "day is it today?",
+      "answer": "What",
+      "options": [
+        "What",
+        "know",
+        "me"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "is Monday.",
+      "answer": "Today",
+      "options": [
+        "Today",
+        "me",
+        "can"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "he go to the park?",
+      "answer": "Does",
+      "options": [
+        "will",
+        "says",
+        "Does"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "She",
+      "after": "a pig.",
+      "answer": "needs",
+      "options": [
+        "be",
+        "needs",
+        "the"
+      ],
+      "needsReview": true
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "! It's a dog.",
+      "answer": "Look",
+      "options": [
+        "Look",
+        "need",
+        "grow"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "David is looking at the hippo, a monkey steals his banana.",
+      "answer": "While",
+      "options": [
+        "would",
+        "got",
+        "While"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "I",
+      "after": "with markers.",
+      "answer": "draw",
+      "options": [
+        "while",
+        "big",
+        "draw"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "you color the wall?",
+      "answer": "Did",
+      "options": [
+        "big",
+        "like",
+        "Did"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "I had a garden, I would grow some peas.",
+      "answer": "If",
+      "options": [
+        "david",
+        "If",
+        "not"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "It will",
+      "after": "me happy.",
+      "answer": "make",
+      "options": [
+        "we",
+        "make",
+        "grow"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "Mom",
+      "after": "apples.",
+      "answer": "grows",
+      "options": [
+        "grows",
+        "may",
+        "like"
+      ],
+      "needsReview": true
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "not X'mas.",
+      "answer": "That's",
+      "options": [
+        "not",
+        "That's",
+        "like"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "We",
+      "after": "eat a huge turkey.",
+      "answer": "will",
+      "options": [
+        "big",
+        "at",
+        "will"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "I",
+      "after": "It's Easter.",
+      "answer": "know",
+      "options": [
+        "goes",
+        "was",
+        "know"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "One",
+      "after": "me and one for Joy.",
+      "answer": "for",
+      "options": [
+        "need",
+        "got",
+        "for"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "",
+      "after": "are my popsicles?",
+      "answer": "Where",
+      "options": [
+        "like",
+        "Where",
+        "was"
+      ],
+      "needsReview": false
+    },
+    {
+      "level": "big",
+      "before": "David",
+      "after": "one popsicle in his bag.",
+      "answer": "put",
+      "options": [
+        "that's",
+        "no",
+        "put"
+      ],
+      "needsReview": false
+    }
+  ]
+}
