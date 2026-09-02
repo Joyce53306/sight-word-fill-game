@@ -260,6 +260,70 @@
     white-space:nowrap;
     border:0;
   }
+
+  /* ---- Level-up celebration ---- */
+  #levelUpOverlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(58,50,38,0.35);
+    z-index:200;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  #levelUpOverlay.show{ display:flex; }
+  .levelup-card{
+    background:#fff;
+    border-radius:28px;
+    padding:38px 30px;
+    text-align:center;
+    box-shadow:0 12px 0 rgba(58,50,38,0.15);
+    border:3px solid #F0E6D2;
+    position:relative;
+    z-index:2;
+    max-width:340px;
+  }
+  .levelup-card h2{
+    font-size:26px;
+    color:var(--coral);
+    margin:0 0 6px;
+  }
+  .levelup-card p{
+    font-size:16px;
+    color:#8A7B5C;
+    margin:0 0 22px;
+  }
+  .levelup-continue{
+    background:var(--leaf);
+    color:#fff;
+    border:none;
+    border-radius:999px;
+    padding:14px 32px;
+    font-family:'Andika', sans-serif;
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 4px 0 #5C9A4C;
+  }
+  .levelup-continue:active{ transform:translateY(3px); box-shadow:0 1px 0 #5C9A4C; }
+
+  .confetti-piece{
+    position:fixed;
+    top:-20px;
+    width:10px;
+    height:14px;
+    z-index:1;
+    opacity:0.95;
+    border-radius:2px;
+    animation-name:confetti-fall;
+    animation-timing-function:linear;
+    animation-fill-mode:forwards;
+  }
+  @keyframes confetti-fall{
+    0%{ transform:translateY(0) rotate(0deg); opacity:1; }
+    100%{ transform:translateY(110vh) rotate(540deg); opacity:0.9; }
+  }
   .restart-btn{
     margin-top:20px;
     background:var(--sky);
@@ -273,9 +337,38 @@
     cursor:pointer;
     box-shadow:0 4px 0 var(--sky-dark);
   }
+
+  /* ---- Font-loading gate: hides content until Andika is actually ready,
+     so iOS/Android never briefly flash a fallback font's double-story a/g ---- */
+  #fontGate{
+    position:fixed;
+    inset:0;
+    background:var(--cream);
+    z-index:999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Andika', sans-serif;
+    font-size:17px;
+    color:var(--sky-dark);
+    font-weight:700;
+  }
+  #fontGate.hidden{ display:none; }
+  #appRoot{ visibility:hidden; }
+  #appRoot.ready{ visibility:visible; }
+
+  .fontcheck{
+    margin-top:26px;
+    font-size:14px;
+    color:#B3A688;
+  }
 </style>
 </head>
 <body>
+
+<div id="fontGate">Loading… 讀取中</div>
+
+<div id="appRoot">
 
 <span class="wm-sig" aria-hidden="true">© Joyce53306</span>
 
@@ -312,12 +405,48 @@
   <button class="restart-btn" id="restartBtn">Choose class again</button>
 </div>
 
+<div id="levelUpOverlay">
+  <div class="levelup-card">
+    <h2 id="levelUpTitle">🎉 過關啦！</h2>
+    <p id="levelUpSubtitle">答對 5 題，太棒了！</p>
+    <button class="levelup-continue" id="levelUpContinue">繼續 Continue →</button>
+  </div>
+</div>
+
+<div class="fontcheck">Font check: Aa Gg Ll Qq</div>
+
+</div><!-- /#appRoot -->
+
 <script>
 (function(){
   // ---- watermark / build signature (do not remove) ----
   const BUILD_SIGNATURE = '© Joyce53306';
   document.documentElement.setAttribute('data-build', BUILD_SIGNATURE);
   console.log('%c' + BUILD_SIGNATURE, 'color:#3A93B0;font-weight:bold;');
+
+  // ---- Font gate: wait for Andika to actually be ready before showing
+  // any text, so iOS/Android never briefly render a/g/l/q in a fallback
+  // font's shape. Falls back to a 2.5s timeout if the Font Loading API
+  // is unavailable (older WebViews) so the app never gets stuck. ----
+  const fontGate = document.getElementById('fontGate');
+  const appRoot = document.getElementById('appRoot');
+
+  function revealApp(){
+    fontGate.classList.add('hidden');
+    appRoot.classList.add('ready');
+  }
+
+  if (document.fonts && document.fonts.load){
+    Promise.race([
+      Promise.all([
+        document.fonts.load('700 20px Andika'),
+        document.fonts.load('400 20px Andika')
+      ]),
+      new Promise(resolve => setTimeout(resolve, 2500))
+    ]).then(revealApp).catch(revealApp);
+  } else {
+    setTimeout(revealApp, 400);
+  }
 
   const startScreen = document.getElementById('startScreen');
   const gameScreen = document.getElementById('gameScreen');
@@ -331,6 +460,10 @@
   const nextBtn = document.getElementById('nextBtn');
   const listenBtn = document.getElementById('listenBtn');
   const restartBtn = document.getElementById('restartBtn');
+  const levelUpOverlay = document.getElementById('levelUpOverlay');
+  const levelUpTitle = document.getElementById('levelUpTitle');
+  const levelUpSubtitle = document.getElementById('levelUpSubtitle');
+  const levelUpContinue = document.getElementById('levelUpContinue');
 
   let questionBank = { middle: [], big: [] };
   let queue = [];
@@ -362,6 +495,7 @@
   function startLevel(level){
     queue = shuffle(questionBank[level] || []);
     idx = 0;
+    hideLevelUp();
     startScreen.style.display = 'none';
     doneScreen.style.display = 'none';
     topbar.style.display = 'flex';
@@ -515,7 +649,54 @@
   window.addEventListener('pointermove', onPointerMove);
   window.addEventListener('pointerup', onPointerUp);
 
-  nextBtn.addEventListener('click', () => { idx++; loadQuestion(); });
+  nextBtn.addEventListener('click', () => {
+    idx++;
+    const questionsPerStage = 5;
+    const justFinishedStage = idx > 0 && idx % questionsPerStage === 0 && idx < queue.length;
+    if (justFinishedStage){
+      showLevelUp(idx / questionsPerStage);
+    } else {
+      loadQuestion();
+    }
+  });
+
+  function showLevelUp(stageNumber){
+    levelUpTitle.textContent = '🎉 過關啦！Level ' + stageNumber + '!';
+    levelUpSubtitle.textContent = '答對 5 題，太棒了！Great job!';
+    levelUpOverlay.classList.add('show');
+    spawnConfetti();
+  }
+
+  function hideLevelUp(){
+    levelUpOverlay.classList.remove('show');
+    document.querySelectorAll('.confetti-piece').forEach(el => el.remove());
+  }
+
+  levelUpContinue.addEventListener('click', () => {
+    hideLevelUp();
+    loadQuestion();
+  });
+
+  function spawnConfetti(){
+    const colors = ['#FF8C69', '#5FB8D6', '#7CB86B', '#F4C542', '#C77DFF'];
+    const count = 60;
+    for (let i = 0; i < count; i++){
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      const duration = 2.2 + Math.random() * 1.4;
+      const delay = Math.random() * 0.6;
+      piece.style.animationDuration = duration + 's';
+      piece.style.animationDelay = delay + 's';
+      if (Math.random() > 0.5){
+        piece.style.borderRadius = '50%';
+      }
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), (duration + delay) * 1000 + 200);
+    }
+  }
+
   restartBtn.addEventListener('click', () => {
     doneScreen.style.display = 'none';
     startScreen.style.display = 'block';
