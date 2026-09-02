@@ -1,0 +1,539 @@
+<!--
+  Sight Word Sentence Builder
+  © Joyce53306
+  Unauthorized copying or redistribution without credit is not permitted.
+  Build signature: JOYCE53306-SWFG-v1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="Joyce53306">
+<meta name="copyright" content="© Joyce53306">
+<title>Sight Word Sentence Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF8ED;
+    --sky:#5FB8D6;
+    --sky-dark:#3A93B0;
+    --coral:#FF8C69;
+    --leaf:#7CB86B;
+    --ink:#3A3226;
+    --slot-empty:#E8DCC8;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:var(--cream);
+    font-family:'Andika', sans-serif;
+    color:var(--ink);
+    overscroll-behavior:none;
+  }
+  body{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    min-height:100vh;
+    padding:20px 16px 40px;
+  }
+
+  /* ---- Start screen ---- */
+  #startScreen{
+    width:100%;
+    max-width:480px;
+    text-align:center;
+    margin-top:10vh;
+  }
+  #startScreen h1{
+    font-size:28px;
+    color:var(--coral);
+    margin-bottom:6px;
+  }
+  #startScreen p{
+    font-size:16px;
+    color:#8A7B5C;
+    margin-bottom:30px;
+  }
+  .level-btn{
+    display:block;
+    width:100%;
+    font-family:'Andika', sans-serif;
+    font-size:22px;
+    font-weight:700;
+    color:#fff;
+    border:none;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:16px;
+    cursor:pointer;
+  }
+  .level-btn.middle{ background:var(--sky); box-shadow:0 5px 0 var(--sky-dark); }
+  .level-btn.big{ background:var(--coral); box-shadow:0 5px 0 #D96A48; }
+  .level-btn:active{ transform:translateY(4px); box-shadow:none; }
+
+  /* ---- Top bar ---- */
+  .topbar{
+    width:100%;
+    max-width:520px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+    display:none;
+  }
+  .progress{
+    font-size:15px;
+    font-weight:700;
+    color:var(--sky-dark);
+    background:#fff;
+    padding:6px 14px;
+    border-radius:999px;
+    border:2px solid var(--sky);
+  }
+  .title{
+    font-size:15px;
+    font-weight:700;
+    color:var(--coral);
+    letter-spacing:0.5px;
+  }
+
+  #gameScreen{ display:none; width:100%; max-width:520px; flex-direction:column; align-items:center; }
+
+  .card{
+    width:100%;
+    background:#ffffff;
+    border-radius:28px;
+    padding:32px 22px 26px;
+    box-shadow:0 10px 0 rgba(58,50,38,0.08);
+    border:3px solid #F0E6D2;
+    text-align:center;
+    position:relative;
+  }
+
+  .listen-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--sky);
+    color:#fff;
+    border:none;
+    border-radius:999px;
+    padding:12px 22px;
+    font-family:'Andika', sans-serif;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 4px 0 var(--sky-dark);
+    transition:transform 0.08s;
+  }
+  .listen-btn:active{ transform:translateY(3px); box-shadow:0 1px 0 var(--sky-dark); }
+  .listen-btn svg{ width:20px; height:20px; }
+
+  .sentence{
+    margin:30px 0 8px;
+    font-size:27px;
+    line-height:1.8;
+    font-weight:700;
+    color:var(--ink);
+  }
+  @media (min-width:400px){
+    .sentence{ font-size:30px; }
+  }
+
+  .slot{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:96px;
+    height:48px;
+    padding:0 10px;
+    margin:0 4px;
+    vertical-align:middle;
+    border-radius:14px;
+    border:3px dashed #C9B98F;
+    background:var(--slot-empty);
+    font-size:25px;
+    font-weight:700;
+    color:transparent;
+    transition:background 0.15s, border-color 0.15s, transform 0.15s;
+    position:relative;
+    top:6px;
+  }
+  .slot.filled{
+    border-style:solid;
+    border-color:var(--leaf);
+    background:#EAF6E4;
+    color:var(--ink);
+  }
+  .slot.wrong-flash{
+    border-color:var(--coral);
+    background:#FFE9E1;
+    animation:shake 0.35s;
+  }
+  .slot.hover-target{
+    background:#FFF3D6;
+    border-color:var(--coral);
+    transform:scale(1.05);
+  }
+  @keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    25%{ transform:translateX(-6px); }
+    75%{ transform:translateX(6px); }
+  }
+
+  .options{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin-top:34px;
+    flex-wrap:wrap;
+  }
+  .chip{
+    touch-action:none;
+    user-select:none;
+    -webkit-user-select:none;
+    font-family:'Andika', sans-serif;
+    font-size:23px;
+    font-weight:700;
+    color:var(--ink);
+    background:#FFF3D6;
+    border:3px solid #E8C875;
+    border-radius:16px;
+    padding:12px 20px;
+    cursor:grab;
+    box-shadow:0 4px 0 #D9AF52;
+    position:relative;
+  }
+  .chip.dragging{
+    cursor:grabbing;
+    z-index:50;
+    box-shadow:0 8px 18px rgba(0,0,0,0.18);
+    transition:none;
+  }
+  .chip.settled{ transition:transform 0.25s ease; }
+  .chip.used{ opacity:0.35; pointer-events:none; }
+
+  .feedback{
+    min-height:34px;
+    margin-top:20px;
+    font-size:18px;
+    font-weight:700;
+  }
+  .feedback.good{ color:var(--leaf); }
+  .feedback.bad{ color:var(--coral); }
+
+  .next-btn{
+    margin-top:16px;
+    display:none;
+    background:var(--coral);
+    color:#fff;
+    border:none;
+    border-radius:999px;
+    padding:14px 34px;
+    font-family:'Andika', sans-serif;
+    font-size:19px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 4px 0 #D96A48;
+  }
+  .next-btn:active{ transform:translateY(3px); box-shadow:0 1px 0 #D96A48; }
+  .next-btn.show{ display:inline-block; }
+
+  #doneScreen{
+    display:none;
+    text-align:center;
+    margin-top:12vh;
+  }
+  #doneScreen h2{ font-size:26px; color:var(--leaf); }
+
+  /* invisible watermark — present in the DOM, not visible on screen */
+  .wm-sig{
+    position:absolute;
+    width:1px; height:1px;
+    padding:0; margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
+  }
+  .restart-btn{
+    margin-top:20px;
+    background:var(--sky);
+    color:#fff;
+    border:none;
+    border-radius:999px;
+    padding:14px 30px;
+    font-family:'Andika', sans-serif;
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 4px 0 var(--sky-dark);
+  }
+</style>
+</head>
+<body>
+
+<span class="wm-sig" aria-hidden="true">© Joyce53306</span>
+
+<div id="startScreen">
+  <h1>🔤 Sight Word Sentences</h1>
+  <p>Choose your class to begin</p>
+  <button class="level-btn middle" data-level="middle">Middle Class 中班</button>
+  <button class="level-btn big" data-level="big">Big Class 大班</button>
+</div>
+
+<div class="topbar" id="topbar">
+  <span class="title" id="levelLabel">Sight Word Sentences</span>
+  <span class="progress" id="progress">Question 1 / 1</span>
+</div>
+
+<div id="gameScreen">
+  <div class="card">
+    <button class="listen-btn" id="listenBtn" aria-label="Listen to the sentence">
+      <svg viewBox="0 0 24 24" fill="white"><path d="M3 10v4h4l5 5V5L7 10H3z"/><path d="M16.5 12a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12z"/></svg>
+      Listen
+    </button>
+
+    <div class="sentence" id="sentence"></div>
+
+    <div class="options" id="options"></div>
+
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn">Next question →</button>
+  </div>
+</div>
+
+<div id="doneScreen">
+  <h2>🎉 All done! Great job!</h2>
+  <button class="restart-btn" id="restartBtn">Choose class again</button>
+</div>
+
+<script>
+(function(){
+  // ---- watermark / build signature (do not remove) ----
+  const BUILD_SIGNATURE = '© Joyce53306';
+  document.documentElement.setAttribute('data-build', BUILD_SIGNATURE);
+  console.log('%c' + BUILD_SIGNATURE, 'color:#3A93B0;font-weight:bold;');
+
+  const startScreen = document.getElementById('startScreen');
+  const gameScreen = document.getElementById('gameScreen');
+  const doneScreen = document.getElementById('doneScreen');
+  const topbar = document.getElementById('topbar');
+  const levelLabel = document.getElementById('levelLabel');
+  const progressEl = document.getElementById('progress');
+  const sentenceEl = document.getElementById('sentence');
+  const optionsEl = document.getElementById('options');
+  const feedback = document.getElementById('feedback');
+  const nextBtn = document.getElementById('nextBtn');
+  const listenBtn = document.getElementById('listenBtn');
+  const restartBtn = document.getElementById('restartBtn');
+
+  let questionBank = { middle: [], big: [] };
+  let queue = [];
+  let idx = 0;
+  let solved = false;
+  let currentAnswer = '';
+  let currentBefore = '';
+  let currentAfter = '';
+
+  fetch('questions.json').then(r => r.json()).then(data => {
+    questionBank = data;
+  }).catch(() => {
+    feedback.textContent = 'Could not load questions.json (check it is in the same folder).';
+  });
+
+  document.querySelectorAll('.level-btn').forEach(btn => {
+    btn.addEventListener('click', () => startLevel(btn.dataset.level));
+  });
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function startLevel(level){
+    queue = shuffle(questionBank[level] || []);
+    idx = 0;
+    startScreen.style.display = 'none';
+    doneScreen.style.display = 'none';
+    topbar.style.display = 'flex';
+    gameScreen.style.display = 'flex';
+    levelLabel.textContent = level === 'middle' ? 'Middle Class 中班' : 'Big Class 大班';
+    loadQuestion();
+  }
+
+  function loadQuestion(){
+    if (idx >= queue.length){
+      gameScreen.style.display = 'none';
+      topbar.style.display = 'none';
+      doneScreen.style.display = 'block';
+      return;
+    }
+    const q = queue[idx];
+    solved = false;
+    currentAnswer = q.answer;
+    currentBefore = q.before;
+    currentAfter = q.after;
+    progressEl.textContent = 'Question ' + (idx + 1) + ' / ' + queue.length;
+    feedback.textContent = '';
+    feedback.className = 'feedback';
+    nextBtn.classList.remove('show');
+
+    sentenceEl.innerHTML = '';
+    if (q.before){
+      sentenceEl.appendChild(document.createTextNode(q.before + ' '));
+    }
+    const slot = document.createElement('span');
+    slot.className = 'slot';
+    slot.id = 'slot';
+    slot.textContent = q.answer;
+    sentenceEl.appendChild(slot);
+    if (q.after){
+      sentenceEl.appendChild(document.createTextNode(' ' + q.after));
+    }
+
+    optionsEl.innerHTML = '';
+    q.options.forEach(word => {
+      const chip = document.createElement('div');
+      chip.className = 'chip';
+      chip.dataset.word = word;
+      chip.textContent = word;
+      chip.addEventListener('pointerdown', onPointerDown);
+      optionsEl.appendChild(chip);
+    });
+
+    setTimeout(speakSentence, 350);
+  }
+
+  function speakSentence(){
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const part1 = currentBefore || '';
+    const part2 = currentAfter || '';
+    if (part1){
+      const u1 = new SpeechSynthesisUtterance(part1);
+      u1.lang = 'en-US'; u1.rate = 0.95;
+      u1.onend = () => setTimeout(() => speakPart2(part2), 450);
+      window.speechSynthesis.speak(u1);
+    } else {
+      setTimeout(() => speakPart2(part2), 450);
+    }
+  }
+  function speakPart2(part2){
+    if (!part2) return;
+    const u2 = new SpeechSynthesisUtterance(part2);
+    u2.lang = 'en-US'; u2.rate = 0.95;
+    window.speechSynthesis.speak(u2);
+  }
+  listenBtn.addEventListener('click', speakSentence);
+
+  // ---- Drag and drop (pointer events) ----
+  let dragEl = null;
+  let startX = 0, startY = 0, origX = 0, origY = 0;
+
+  function getSlotRect(){ return document.getElementById('slot').getBoundingClientRect(); }
+
+  function onPointerDown(e){
+    if (solved) return;
+    const chip = e.currentTarget;
+    if (chip.classList.contains('used')) return;
+    dragEl = chip;
+    dragEl.setPointerCapture(e.pointerId);
+    dragEl.classList.add('dragging');
+    dragEl.classList.remove('settled');
+    const rect = dragEl.getBoundingClientRect();
+    origX = rect.left; origY = rect.top;
+    startX = e.clientX; startY = e.clientY;
+    dragEl.style.position = 'fixed';
+    dragEl.style.left = origX + 'px';
+    dragEl.style.top = origY + 'px';
+    dragEl.style.width = rect.width + 'px';
+  }
+
+  function onPointerMove(e){
+    if (!dragEl) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    dragEl.style.left = (origX + dx) + 'px';
+    dragEl.style.top = (origY + dy) + 'px';
+
+    const chipRect = dragEl.getBoundingClientRect();
+    const cx = chipRect.left + chipRect.width/2;
+    const cy = chipRect.top + chipRect.height/2;
+    const sr = getSlotRect();
+    const over = cx > sr.left-10 && cx < sr.right+10 && cy > sr.top-10 && cy < sr.bottom+10;
+    document.getElementById('slot').classList.toggle('hover-target', over && !solved);
+  }
+
+  function resetChipPosition(chip){
+    chip.classList.add('settled');
+    chip.style.position = '';
+    chip.style.left = '';
+    chip.style.top = '';
+    chip.style.width = '';
+  }
+
+  function onPointerUp(e){
+    if (!dragEl) return;
+    const slot = document.getElementById('slot');
+    slot.classList.remove('hover-target');
+    const chipRect = dragEl.getBoundingClientRect();
+    const cx = chipRect.left + chipRect.width/2;
+    const cy = chipRect.top + chipRect.height/2;
+    const sr = slot.getBoundingClientRect();
+    const dropped = cx > sr.left-10 && cx < sr.right+10 && cy > sr.top-10 && cy < sr.bottom+10;
+
+    const chip = dragEl;
+    chip.classList.remove('dragging');
+    dragEl = null;
+
+    if (dropped){
+      handleDrop(chip);
+    } else {
+      resetChipPosition(chip);
+    }
+  }
+
+  function handleDrop(chip){
+    const slot = document.getElementById('slot');
+    const word = chip.dataset.word;
+    if (word.toLowerCase() === currentAnswer.toLowerCase()){
+      solved = true;
+      slot.classList.add('filled');
+      slot.style.color = 'var(--ink)';
+      chip.classList.add('used');
+      resetChipPosition(chip);
+      feedback.textContent = "🎉 Great job! That's right!";
+      feedback.className = 'feedback good';
+      nextBtn.classList.add('show');
+    } else {
+      resetChipPosition(chip);
+      slot.classList.add('wrong-flash');
+      feedback.textContent = 'Not quite — try again!';
+      feedback.className = 'feedback bad';
+      setTimeout(()=> slot.classList.remove('wrong-flash'), 350);
+    }
+  }
+
+  window.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerup', onPointerUp);
+
+  nextBtn.addEventListener('click', () => { idx++; loadQuestion(); });
+  restartBtn.addEventListener('click', () => {
+    doneScreen.style.display = 'none';
+    startScreen.style.display = 'block';
+  });
+
+})();
+</script>
+
+</body>
+</html>
