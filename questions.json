@@ -147,7 +147,7 @@
     {
       "level": "middle",
       "before": "I don't",
-      "after": "yellow bee.",
+      "after": "yellow bees.",
       "answer": "like",
       "options": [
         "like",
@@ -293,7 +293,7 @@
     {
       "level": "big",
       "before": "",
-      "after": "I am not.",
+      "after": ", I am not.",
       "answer": "No",
       "options": [
         "on",
@@ -581,7 +581,7 @@
     {
       "level": "big",
       "before": "I",
-      "after": "It's Easter.",
+      "after": "it's Easter.",
       "answer": "know",
       "options": [
         "goes",
@@ -617,14 +617,14 @@
     {
       "level": "big",
       "before": "David",
-      "after": "one popsicle in his bag.",
-      "answer": "put",
+      "after": "one popsicle in his hat.",
+      "answer": "puts",
       "options": [
-        "that's",
-        "no",
-        "put"
+        "puts",
+        "that",
+        "which"
       ],
-      "needsReview": false
+      "needsReview": true
     }
   ]
 }
