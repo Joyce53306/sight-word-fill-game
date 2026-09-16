@@ -556,13 +556,23 @@
     nextBtn.classList.remove('show');
 
     sentenceEl.innerHTML = '';
-    // Sentence text is intentionally hidden — the child listens to the
-    // full sentence via audio and only sees the blank to fill in.
+    sentenceEl.style.visibility = 'hidden';
+    // Build the sentence with its blank now (so layout/width is correct),
+    // but keep it invisible until the sentence has finished being spoken.
+    if (q.before){
+      sentenceEl.appendChild(document.createTextNode(q.before + ' '));
+    }
     const slot = document.createElement('span');
     slot.className = 'slot';
     slot.id = 'slot';
     slot.textContent = q.answer;
     sentenceEl.appendChild(slot);
+    if (q.after){
+      // No leading space when punctuation should attach directly to the
+      // blank (e.g. "No, I am not." / "Who's at the door?" / "better?").
+      const noSpaceLead = /^[,.?!']/.test(q.after);
+      sentenceEl.appendChild(document.createTextNode((noSpaceLead ? '' : ' ') + q.after));
+    }
 
     optionsEl.innerHTML = '';
     q.options.forEach(word => {
@@ -590,7 +600,10 @@
   }
 
   function speakSentence(){
-    if (!('speechSynthesis' in window)) return;
+    if (!('speechSynthesis' in window)){
+      sentenceEl.style.visibility = 'visible';
+      return;
+    }
     window.speechSynthesis.cancel();
     const noSpaceLead = /^[,.?!']/.test(currentAfter || '');
     const full = [currentBefore, currentAnswer].filter(Boolean).join(' ') +
@@ -598,6 +611,9 @@
     const u = new SpeechSynthesisUtterance(toSpeechText(full));
     u.lang = 'en-US';
     u.rate = 0.8;
+    // Reveal the sentence text 3 seconds after it's finished being read aloud.
+    u.onend = () => { setTimeout(() => { sentenceEl.style.visibility = 'visible'; }, 3000); };
+    u.onerror = () => { sentenceEl.style.visibility = 'visible'; };
     window.speechSynthesis.speak(u);
   }
   listenBtn.addEventListener('click', speakSentence);
