@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="author" content="Joyce53306">
 <meta name="copyright" content="© Joyce53306">
-<title>Sight Word Sentence Builder</title>
+<title>Sight Words Sentences (Big)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
@@ -360,6 +360,23 @@
     font-size:14px;
     color:#B3A688;
   }
+
+  /* ---- Joyce's ABC Adventure brand logo — links back to the hub ---- */
+  .brand-logo{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:22px;
+    padding:8px 16px;
+    border-radius:999px;
+    background:#fff;
+    border:2px solid #F0E6D2;
+    font-size:13px;
+    font-weight:700;
+    color:#B08A4E;
+    text-decoration:none;
+  }
+  .brand-logo:active{ transform:translateY(1px); }
 </style>
 </head>
 <body>
@@ -371,14 +388,14 @@
 <span class="wm-sig" aria-hidden="true">© Joyce53306</span>
 
 <div id="startScreen">
-  <h1>🔤 Sight Word Sentences</h1>
+  <h1>🔤 Sight Words Sentences (Big)</h1>
   <p>Choose your class to begin</p>
   <button class="level-btn middle" data-level="middle">Middle Class 中班</button>
   <button class="level-btn big" data-level="big">Big Class 大班</button>
 </div>
 
 <div class="topbar" id="topbar">
-  <span class="title" id="levelLabel">Sight Word Sentences</span>
+  <span class="title" id="levelLabel">Sight Words Sentences (Big)</span>
   <span class="progress" id="progress">Question 1 / 1</span>
 </div>
 
@@ -412,6 +429,8 @@
 </div>
 
 <div class="fontcheck">Font check: Aa Gg Ll Qq</div>
+
+<a class="brand-logo" href="https://joyce53306.github.io/Joyce-ABC-Adventure/">🧡 Joyce's ABC Adventure</a>
 
 </div><!-- /#appRoot -->
 
@@ -473,6 +492,14 @@
 
   fetch('questions.json').then(r => r.json()).then(data => {
     questionBank = data;
+    // Deep-link support: ?level=big or ?level=middle jumps straight into
+    // that class (used by the hub's dedicated "BIG CLASS" card), skipping
+    // the choose-a-class screen.
+    const params = new URLSearchParams(window.location.search);
+    const requestedLevel = params.get('level');
+    if (requestedLevel === 'big' || requestedLevel === 'middle'){
+      startLevel(requestedLevel);
+    }
   }).catch(() => {
     feedback.textContent = 'Could not load questions.json (check it is in the same folder).';
   });
@@ -568,7 +595,7 @@
       (currentAfter ? (noSpaceLead ? '' : ' ') + currentAfter : '');
     const u = new SpeechSynthesisUtterance(toSpeechText(full));
     u.lang = 'en-US';
-    u.rate = 0.95;
+    u.rate = 0.8;
     window.speechSynthesis.speak(u);
   }
   listenBtn.addEventListener('click', speakSentence);
