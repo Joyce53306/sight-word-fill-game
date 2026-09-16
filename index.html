@@ -133,6 +133,13 @@
   .listen-btn:active{ transform:translateY(3px); box-shadow:0 1px 0 var(--sky-dark); }
   .listen-btn svg{ width:20px; height:20px; }
 
+  .listen-hint{
+    margin:14px 0 0;
+    font-size:14px;
+    color:#B08A4E;
+    font-weight:700;
+  }
+
   .sentence{
     margin:30px 0 8px;
     font-size:27px;
@@ -406,6 +413,8 @@
       Listen
     </button>
 
+    <p class="listen-hint">🎧 Listen carefully, then drag the missing word</p>
+
     <div class="sentence" id="sentence"></div>
 
     <div class="options" id="options"></div>
@@ -547,20 +556,13 @@
     nextBtn.classList.remove('show');
 
     sentenceEl.innerHTML = '';
-    if (q.before){
-      sentenceEl.appendChild(document.createTextNode(q.before + ' '));
-    }
+    // Sentence text is intentionally hidden — the child listens to the
+    // full sentence via audio and only sees the blank to fill in.
     const slot = document.createElement('span');
     slot.className = 'slot';
     slot.id = 'slot';
     slot.textContent = q.answer;
     sentenceEl.appendChild(slot);
-    if (q.after){
-      // No leading space when punctuation should attach directly to the
-      // blank (e.g. "No, I am not." / "Who's at the door?" / "better?").
-      const noSpaceLead = /^[,.?!']/.test(q.after);
-      sentenceEl.appendChild(document.createTextNode((noSpaceLead ? '' : ' ') + q.after));
-    }
 
     optionsEl.innerHTML = '';
     q.options.forEach(word => {
